@@ -1,7 +1,6 @@
 package com.desafio.compasso.msclientecidade.entity;
 
 import com.desafio.compasso.msclientecidade.enums.UfEnum;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
