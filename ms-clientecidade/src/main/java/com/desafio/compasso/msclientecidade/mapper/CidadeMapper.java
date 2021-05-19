@@ -2,8 +2,10 @@ package com.desafio.compasso.msclientecidade.mapper;
 
 import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.entity.CidadeEntity;
+import com.desafio.compasso.msclientecidade.enums.UfEnum;
+import com.desafio.compasso.msclientecidade.web.request.CriarCidadeRequest;
 import com.desafio.compasso.msclientecidade.web.request.ListarCidadesRequest;
-import com.desafio.compasso.msclientecidade.web.response.ListarCidadesResponse;
+import com.desafio.compasso.msclientecidade.web.response.CidadeResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,8 +28,8 @@ public class CidadeMapper {
                 .build();
     }
 
-    public ListarCidadesResponse toListarCidadeResponse(CidadeDTO cidadeDTO){
-        return ListarCidadesResponse
+    public CidadeResponse toCidadeResponse(CidadeDTO cidadeDTO){
+        return CidadeResponse
                 .builder()
                 .id(cidadeDTO.getId())
                 .nome(cidadeDTO.getNome())
@@ -35,12 +37,27 @@ public class CidadeMapper {
                 .build();
     }
 
-    public CidadeDTO toCidadeDTO (ListarCidadesRequest listarCidadeRequest){
+    public CidadeDTO toCidadeDTO (ListarCidadesRequest listarCidadesRequest){
+            return CidadeDTO
+                    .builder()
+                    .nome(listarCidadesRequest.getNome())
+                    .estado(preparaEnum(listarCidadesRequest.getEstado()))
+                    .build();
+    }
+
+    public CidadeDTO toCidadeDTO(CriarCidadeRequest criarCidadeRequest){
         return CidadeDTO
                 .builder()
-                .nome(listarCidadeRequest.getNome())
-                .estado(listarCidadeRequest.getEstado())
+                .nome(criarCidadeRequest.getNome())
+                .estado(UfEnum.valueOf(criarCidadeRequest.getEstado().toUpperCase()))
                 .build();
+    }
+
+    private UfEnum preparaEnum(String enums) {
+        if(enums != null) {
+            return UfEnum.valueOf(enums.toUpperCase());
+        }
+        return null;
     }
 
 }

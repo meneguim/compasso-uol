@@ -2,6 +2,7 @@ package com.desafio.compasso.msclientecidade.service;
 
 import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.entity.CidadeEntity;
+import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
 import com.desafio.compasso.msclientecidade.mapper.CidadeMapper;
 import com.desafio.compasso.msclientecidade.repository.CidadeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,9 @@ public class CidadeService {
     private CidadeMapper cidadeMapper;
 
     public Page<CidadeDTO> listarCidades(CidadeDTO cidadeDTO, Pageable pageable){
-        log.info("c=CidadeService m=findByName, dto={}, pageable={}",cidadeDTO,pageable);
+        log.info("c=CidadeService m=listarCidades, dto={}, pageable={}",cidadeDTO,pageable);
 
-        CidadeEntity cidadeEntity = CidadeEntity
+        final CidadeEntity cidadeEntity = CidadeEntity
                 .builder()
                 .id(cidadeDTO.getId())
                 .nome((cidadeDTO.getNome() == null) ? cidadeDTO.getNome() : cidadeDTO.getNome().toUpperCase())
@@ -37,6 +38,24 @@ public class CidadeService {
         Page<CidadeEntity> cidades = this.cidadeRepository.findAll(example,pageable);
 
         return cidades.map(it -> this.cidadeMapper.toCidadeDTO(it));
+    }
+
+    public CidadeDTO criarCidade(CidadeDTO cidadeDTO){
+        log.info("c=CidadeService m=CriarCidadeRequest, dto={}",cidadeDTO);
+
+        if(cidadeRepository.findNomeExiste(cidadeDTO.getNome().toUpperCase()) > 0) {
+            throw new CidadeEncontradaException("A cidade " + cidadeDTO.getNome().toUpperCase() + " já existe no cadastro");
+        }
+
+        final CidadeEntity cidadeEntity =  cidadeRepository
+                .saveAndFlush(this.cidadeMapper.toCidadeEntity(CidadeDTO
+                        .builder()
+                        .id(cidadeDTO.getId())
+                        .nome(cidadeDTO.getNome().toUpperCase())
+                        .estado(cidadeDTO.getEstado())
+                        .build()));
+
+        return this.cidadeMapper.toCidadeDTO(cidadeEntity);
     }
 
 

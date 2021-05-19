@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ListarCidadesRequest {
     private String nome;
-    private UfEnum estado;
+    private String estado;
 }

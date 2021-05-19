@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ListarCidadesResponse {
+public class CidadeResponse {
     private Long id;
     private String nome;
     private UfEnum estado;

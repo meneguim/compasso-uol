@@ -1,5 +1,7 @@
 package com.desafio.compasso.msclientecidade.web.advice;
 
+import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
+import com.desafio.compasso.msclientecidade.exception.CidadeNaoInformadaException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,9 +14,9 @@ import java.util.Date;
 @ControllerAdvice
 public class CidadeAdvice extends ResponseEntityExceptionHandler {
 
-/*    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<ExceptionResponse> handleResourceNotFoundException(Exception ex, WebRequest request){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),"Cidade não cadastrada",request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
-    }*/
+    @ExceptionHandler(CidadeEncontradaException.class)
+    public final ResponseEntity<ExceptionResponse> handleCidadeEncontradaException(Exception ex, WebRequest request){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),ex.getMessage(),request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }

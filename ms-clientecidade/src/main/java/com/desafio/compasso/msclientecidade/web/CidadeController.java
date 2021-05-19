@@ -4,17 +4,19 @@ import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.enums.UfEnum;
 import com.desafio.compasso.msclientecidade.mapper.CidadeMapper;
 import com.desafio.compasso.msclientecidade.service.CidadeService;
+import com.desafio.compasso.msclientecidade.web.request.CriarCidadeRequest;
 import com.desafio.compasso.msclientecidade.web.request.ListarCidadesRequest;
-import com.desafio.compasso.msclientecidade.web.response.ListarCidadesResponse;
+import com.desafio.compasso.msclientecidade.web.response.CidadeResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
 
 @Slf4j
 @RestController
@@ -28,13 +30,23 @@ public class CidadeController {
     private CidadeMapper cidadeMapper;
 
     @GetMapping
-    public Page<ListarCidadesResponse> listarCidades (
+    public Page<CidadeResponse> listarCidades (
                 @RequestParam(required = false, name="nome") String nome,
-                @RequestParam(required = false, name="estado") UfEnum estado,
+                @RequestParam(required = false, name="estado") String estado,
                 @PageableDefault Pageable pageable){
         log.info("c=CidadeController m=listarCidades, nome={}, estado={}, pageable={}",nome,estado,pageable);
-        ListarCidadesRequest request = ListarCidadesRequest.builder().nome(nome).estado(estado).build();
+
+        final ListarCidadesRequest request = ListarCidadesRequest.builder().nome(nome).estado(estado).build();
+
         Page<CidadeDTO> listaCidades = this.cidadeService.listarCidades(this.cidadeMapper.toCidadeDTO(request), pageable);
-        return listaCidades.map(it -> this.cidadeMapper.toListarCidadeResponse(it));
+
+        return listaCidades.map(it -> this.cidadeMapper.toCidadeResponse(it));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public CidadeResponse criarCidade(@Valid  @RequestBody CriarCidadeRequest request){
+        log.info("c=CidadeController m=criarCidade, request={}",request);
+        return this.cidadeMapper.toCidadeResponse(this.cidadeService.criarCidade(this.cidadeMapper.toCidadeDTO(request)));
     }
 }
