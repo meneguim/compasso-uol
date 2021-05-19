@@ -43,7 +43,7 @@ public class CidadeService {
     public CidadeDTO criarCidade(CidadeDTO cidadeDTO){
         log.info("c=CidadeService m=CriarCidadeRequest, dto={}",cidadeDTO);
 
-        if(cidadeRepository.findNomeExiste(cidadeDTO.getNome().toUpperCase()) > 0) {
+        if(cidadeRepository.validaExisteCidade(cidadeDTO.getNome().toUpperCase()) > 0) {
             throw new CidadeEncontradaException("A cidade " + cidadeDTO.getNome().toUpperCase() + " já existe no cadastro");
         }
 

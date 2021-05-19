@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface CidadeRepository extends JpaRepository<CidadeEntity,Long> {
 
     @Query("select count(obj.id) from CidadeEntity obj where obj.nome = ?1")
-    Integer findNomeExiste(String nome);
+    Integer validaExisteCidade(String nome);
 
 }
