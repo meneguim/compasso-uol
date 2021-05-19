@@ -12,9 +12,9 @@ import java.util.Date;
 @ControllerAdvice
 public class CidadeAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+/*    @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleResourceNotFoundException(Exception ex, WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),"Cidade não cadastrada",request.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
-    }
+    }*/
 }
