@@ -34,7 +34,7 @@ public class ClienteEntity implements Serializable {
     @Column(name="idade")
     private Integer idade;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name ="uf")
     private CidadeEntity cidade;
 

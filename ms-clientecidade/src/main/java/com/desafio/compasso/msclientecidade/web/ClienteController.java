@@ -2,11 +2,15 @@ package com.desafio.compasso.msclientecidade.web;
 
 import com.desafio.compasso.msclientecidade.mapper.ClienteMapper;
 import com.desafio.compasso.msclientecidade.service.ClienteService;
+import com.desafio.compasso.msclientecidade.web.request.CriarCidadeRequest;
+import com.desafio.compasso.msclientecidade.web.request.CriarClienteRequest;
 import com.desafio.compasso.msclientecidade.web.response.ClienteResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -31,4 +35,8 @@ public class ClienteController {
         return null;
     }
 
+    @PostMapping
+    public ClienteResponse criarCliente(@Valid @RequestBody CriarClienteRequest request){
+        return clienteMapper.toClienteResponse(clienteService.criarCliente(this.clienteMapper.toClienteDTO(request)));
+    }
 }

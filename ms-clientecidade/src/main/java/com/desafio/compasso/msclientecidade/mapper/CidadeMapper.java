@@ -3,6 +3,7 @@ package com.desafio.compasso.msclientecidade.mapper;
 import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.entity.CidadeEntity;
 import com.desafio.compasso.msclientecidade.enums.UfEnum;
+import com.desafio.compasso.msclientecidade.web.request.CidadeRequest;
 import com.desafio.compasso.msclientecidade.web.request.CriarCidadeRequest;
 import com.desafio.compasso.msclientecidade.web.request.ListarCidadesRequest;
 import com.desafio.compasso.msclientecidade.web.response.CidadeResponse;
@@ -14,6 +15,16 @@ public class CidadeMapper {
     public CidadeEntity toCidadeEntity (CidadeDTO cidadeDTO){
         return CidadeEntity
                 .builder()
+                .id(cidadeDTO.getId())
+                .nome(cidadeDTO.getNome())
+                .estado(cidadeDTO.getEstado())
+                .build();
+    }
+
+    public CidadeResponse toCidadeResponse(CidadeDTO cidadeDTO){
+        return CidadeResponse
+                .builder()
+                .id(cidadeDTO.getId())
                 .nome(cidadeDTO.getNome())
                 .estado(cidadeDTO.getEstado())
                 .build();
@@ -25,15 +36,6 @@ public class CidadeMapper {
                 .id(cidadeEntity.getId())
                 .nome(cidadeEntity.getNome())
                 .estado(cidadeEntity.getEstado())
-                .build();
-    }
-
-    public CidadeResponse toCidadeResponse(CidadeDTO cidadeDTO){
-        return CidadeResponse
-                .builder()
-                .id(cidadeDTO.getId())
-                .nome(cidadeDTO.getNome())
-                .estado(cidadeDTO.getEstado())
                 .build();
     }
 
@@ -50,6 +52,14 @@ public class CidadeMapper {
                 .builder()
                 .nome(criarCidadeRequest.getNome())
                 .estado(UfEnum.valueOf(criarCidadeRequest.getEstado().toUpperCase()))
+                .build();
+    }
+
+    public CidadeDTO toCidadeDTO(CidadeRequest cidadeRequest){
+        return CidadeDTO
+                .builder()
+                .nome(cidadeRequest.getNome())
+                .estado(cidadeRequest.getEstado())
                 .build();
     }
 
