@@ -4,6 +4,7 @@ import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
 import com.desafio.compasso.msclientecidade.mapper.ClienteMapper;
 import com.desafio.compasso.msclientecidade.service.ClienteService;
+import com.desafio.compasso.msclientecidade.web.request.AtualizarClienteRequest;
 import com.desafio.compasso.msclientecidade.web.request.CriarCidadeRequest;
 import com.desafio.compasso.msclientecidade.web.request.CriarClienteRequest;
 import com.desafio.compasso.msclientecidade.web.request.ListarClienteRequest;
@@ -38,20 +39,16 @@ public class ClienteController {
         return listaClientes.map(it -> this.clienteMapper.toClienteResponse(it));
     }
 
-/*    @GetMapping
-    public ClienteResponse findByIdNome(@RequestParam(required = false, name="nome") String nome,
-                                        @RequestParam(required = false, name="id") Long id){
-        log.info("c=ClienteController m=findByNomeCompleto String={} Long={}",nome,id);
-        if(nome != null){
-            return clienteMapper.toClienteResponse(clienteService.findByNomeCompleto(nome));
-        } else if (id != null) {
-            return clienteMapper.toClienteResponse(clienteService.findById(id));
-        }
-        return null;
-    }*/
-
     @PostMapping
     public ClienteResponse criarCliente(@Valid @RequestBody CriarClienteRequest request){
+        log.info("c=ClienteController m=criarCliente, request={}",request);
         return clienteMapper.toClienteResponse(clienteService.criarCliente(this.clienteMapper.toClienteDTO(request)));
+    }
+
+    @PatchMapping("/{id}/nome")
+    public ClienteResponse atualizarNomeCliente(@Valid @PathVariable(value = "id", required = true) Long id,
+                                                @Valid @RequestBody AtualizarClienteRequest request){
+        log.info("c=ClienteController m=atualizarNomeCliente, Long={} request",id, request);
+        return clienteMapper.toClienteResponse(clienteService.atualizarNomeCliente(id,request.getNome()));
     }
 }

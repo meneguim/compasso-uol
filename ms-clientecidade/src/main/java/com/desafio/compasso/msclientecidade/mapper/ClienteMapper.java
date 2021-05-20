@@ -1,5 +1,6 @@
 package com.desafio.compasso.msclientecidade.mapper;
 
+import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
 import com.desafio.compasso.msclientecidade.entity.ClienteEntity;
 import com.desafio.compasso.msclientecidade.web.request.CriarClienteRequest;
@@ -45,7 +46,7 @@ public class ClienteMapper {
                 .sexo(clienteRequest.getSexo())
                 .dataNascimento(clienteRequest.getDataNascimento())
                 .idade(clienteRequest.getIdade())
-                .cidade(this.cidadeMapper.toCidadeDTO(clienteRequest.getCidade()))
+                .cidade(normalizaDados(clienteRequest.getIdCidade()))
                 .build();
     }
 
@@ -69,6 +70,7 @@ public class ClienteMapper {
                 .build();
     }
 
-
-
+    private CidadeDTO normalizaDados (Long id){
+        return new CidadeDTO(id,null,null);
+    }
 }

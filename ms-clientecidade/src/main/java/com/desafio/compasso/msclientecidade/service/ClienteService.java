@@ -34,18 +34,6 @@ public class ClienteService {
     @Autowired
     CidadeMapper cidadeMapper;
 
-/*    public ClienteDTO findByNomeCompleto(String nome){
-        log.info("c=ClienteService m=findByNomeCompleto string={}",nome);
-        return this.clienteMapper.toClienteDTO(this.clienteRepository.findByNomeCompleto(nome.toUpperCase())
-            .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente nome " + nome.toUpperCase() + " não localizado")));
-    }
-
-    public ClienteDTO findById(Long id){
-        log.info("c=ClienteService m=findById long={}",id);
-        return this.clienteMapper.toClienteDTO(this.clienteRepository.findById(id)
-                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente id " + id + " não localizado")));
-    }*/
-
     public Page<ClienteDTO> listarClientes (ClienteDTO clienteDTO, Pageable pageable){
         log.info("c=ClienteService m=listarClientes, dto={}, pageable={}",clienteDTO,pageable);
 
@@ -77,7 +65,18 @@ public class ClienteService {
 
         clienteDTO.setCidade(cidadeDTO);
 
-        return clienteMapper.toClienteDTO(clienteRepository.saveAndFlush(this.clienteMapper.toClienteEntity(normalizaDados(clienteDTO))));
+        return this.clienteMapper.toClienteDTO(clienteRepository.saveAndFlush(this.clienteMapper.toClienteEntity(normalizaDados(clienteDTO))));
+    }
+
+    public ClienteDTO atualizarNomeCliente(Long id, String nomeCompleto){
+        log.info("c=ClienteService m=atualizarNomeCliente long{} string={} ",id,nomeCompleto);
+
+        final ClienteDTO clienteDTOBusca = this.clienteMapper.toClienteDTO(this.clienteRepository.findById(id)
+                .orElseThrow((() -> new ClienteNaoEncontradoException("Cliente id " + id + " não localizado"))));
+
+        clienteDTOBusca.setNomeCompleto(nomeCompleto.toUpperCase());
+
+        return this.clienteMapper.toClienteDTO(this.clienteRepository.saveAndFlush(this.clienteMapper.toClienteEntity(clienteDTOBusca)));
     }
 
     private ClienteDTO normalizaDados(ClienteDTO clienteDTO){

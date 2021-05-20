@@ -1,12 +1,12 @@
 package com.desafio.compasso.msclientecidade.web.advice;
 
 import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
+import com.desafio.compasso.msclientecidade.exception.ClienteEncontradoException;
 import com.desafio.compasso.msclientecidade.exception.ClienteNaoEncontradoException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -26,14 +26,24 @@ public class Advice extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(createExceptionResponse(ex, request, errors), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CidadeEncontradaException.class)
+    public final ResponseEntity<ExceptionResponse> handleCidadeEncontradaException(CidadeEncontradaException ex, WebRequest request){
+        return new ResponseEntity<>(createExceptionResponse(ex, request), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ClienteNaoEncontradoException.class)
     public final ResponseEntity<ExceptionResponse> handleClienteNotFoundException(ClienteNaoEncontradoException ex, WebRequest request){
         return new ResponseEntity<>(createExceptionResponse(ex, request), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CidadeEncontradaException.class)
-    public final ResponseEntity<ExceptionResponse> handleCidadeEncontradaException(CidadeEncontradaException ex, WebRequest request){
+    @ExceptionHandler(ClienteEncontradoException.class)
+    public final ResponseEntity<ExceptionResponse> handleClienteEncontradoException(ClienteEncontradoException ex, WebRequest request){
         return new ResponseEntity<>(createExceptionResponse(ex, request), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public final ResponseEntity<ExceptionResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+        return new ResponseEntity<>(createExceptionResponse(ex, request), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private ExceptionResponse createExceptionResponse(Exception ex, WebRequest request){
