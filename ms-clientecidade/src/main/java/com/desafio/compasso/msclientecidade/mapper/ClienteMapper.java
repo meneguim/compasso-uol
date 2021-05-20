@@ -3,6 +3,7 @@ package com.desafio.compasso.msclientecidade.mapper;
 import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
 import com.desafio.compasso.msclientecidade.entity.ClienteEntity;
 import com.desafio.compasso.msclientecidade.web.request.CriarClienteRequest;
+import com.desafio.compasso.msclientecidade.web.request.ListarClienteRequest;
 import com.desafio.compasso.msclientecidade.web.response.ClienteResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,14 @@ public class ClienteMapper {
                 .dataNascimento(clienteRequest.getDataNascimento())
                 .idade(clienteRequest.getIdade())
                 .cidade(this.cidadeMapper.toCidadeDTO(clienteRequest.getCidade()))
+                .build();
+    }
+
+    public ClienteDTO toClienteDTO (ListarClienteRequest clienteRequest){
+        return ClienteDTO
+                .builder()
+                .id(clienteRequest.getId())
+                .nomeCompleto(clienteRequest.getNome())
                 .build();
     }
 
