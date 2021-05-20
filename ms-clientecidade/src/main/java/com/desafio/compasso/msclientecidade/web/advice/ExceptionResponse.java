@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -15,4 +16,5 @@ public class ExceptionResponse implements Serializable {
     private Date timestamp;
     private String message;
     private String details;
+    private List<DetalheErro> errors;
 }

@@ -1,9 +1,13 @@
 package com.desafio.compasso.msclientecidade.service;
 
+import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
+import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
 import com.desafio.compasso.msclientecidade.exception.ClienteEncontradoException;
 import com.desafio.compasso.msclientecidade.exception.ClienteNaoEncontradoException;
+import com.desafio.compasso.msclientecidade.mapper.CidadeMapper;
 import com.desafio.compasso.msclientecidade.mapper.ClienteMapper;
+import com.desafio.compasso.msclientecidade.repository.CidadeRepository;
 import com.desafio.compasso.msclientecidade.repository.ClienteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +21,13 @@ public class ClienteService {
     ClienteRepository clienteRepository;
 
     @Autowired
+    CidadeRepository cidadeRepository;
+
+    @Autowired
     ClienteMapper clienteMapper;
+
+    @Autowired
+    CidadeMapper cidadeMapper;
 
     public ClienteDTO findByNomeCompleto(String nome){
         log.info("c=ClienteService m=findByNomeCompleto string={}",nome);
@@ -37,6 +47,11 @@ public class ClienteService {
         if(this.clienteRepository.findByNomeCompleto(clienteDTO.getNomeCompleto().toUpperCase()).isPresent()){
             throw new ClienteEncontradoException("Cliente nome " + clienteDTO.getNomeCompleto().toUpperCase() + " já está cadastrado");
         };
+
+        CidadeDTO cidadeDTO = this.cidadeMapper.toCidadeDTO(cidadeRepository.findById(clienteDTO.getCidade().getId())
+                .orElseThrow(() -> new CidadeEncontradaException("Cidade id " + clienteDTO.getCidade().getId() + " não localizada")));
+
+        clienteDTO.setCidade(cidadeDTO);
 
         return clienteMapper.toClienteDTO(clienteRepository.saveAndFlush(this.clienteMapper.toClienteEntity(clienteDTO)));
     }

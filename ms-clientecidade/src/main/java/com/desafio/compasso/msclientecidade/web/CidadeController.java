@@ -30,13 +30,8 @@ public class CidadeController {
     private CidadeMapper cidadeMapper;
 
     @GetMapping
-    public Page<CidadeResponse> listarCidades (
-                @RequestParam(required = false, name="nome") String nome,
-                @RequestParam(required = false, name="estado") String estado,
-                @PageableDefault Pageable pageable){
-        log.info("c=CidadeController m=listarCidades, nome={}, estado={}, pageable={}",nome,estado,pageable);
-
-        final ListarCidadesRequest request = ListarCidadesRequest.builder().nome(nome).estado(estado).build();
+    public Page<CidadeResponse> listarCidades (ListarCidadesRequest request,@PageableDefault Pageable pageable){
+        log.info("c=CidadeController m=listarCidades, request={}, pageable={}",request,pageable);
 
         Page<CidadeDTO> listaCidades = this.cidadeService.listarCidades(this.cidadeMapper.toCidadeDTO(request), pageable);
 

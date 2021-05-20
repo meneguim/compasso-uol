@@ -43,19 +43,20 @@ public class CidadeService {
     public CidadeDTO criarCidade(CidadeDTO cidadeDTO){
         log.info("c=CidadeService m=CriarCidadeRequest, dto={}",cidadeDTO);
 
-        if(cidadeRepository.validaExisteCidade(cidadeDTO.getNome().toUpperCase()) > 0) {
+        if(cidadeRepository.validaExisteCidade(cidadeDTO.getNome().toUpperCase(),cidadeDTO.getEstado().toString().toUpperCase()) > 0) {
             throw new CidadeEncontradaException("A cidade " + cidadeDTO.getNome().toUpperCase() + " já existe no cadastro");
         }
 
-        final CidadeEntity cidadeEntity =  cidadeRepository
-                .saveAndFlush(this.cidadeMapper.toCidadeEntity(CidadeDTO
-                        .builder()
-                        .id(cidadeDTO.getId())
-                        .nome(cidadeDTO.getNome().toUpperCase())
-                        .estado(cidadeDTO.getEstado())
-                        .build()));
+        return this.cidadeMapper.toCidadeDTO(this.cidadeRepository.saveAndFlush(this.cidadeMapper.toCidadeEntity(normalizaDados(cidadeDTO))));
+    }
 
-        return this.cidadeMapper.toCidadeDTO(cidadeEntity);
+    private CidadeDTO normalizaDados(CidadeDTO cidadeDTO){
+        return CidadeDTO
+                .builder()
+                .id(cidadeDTO.getId())
+                .nome(cidadeDTO.getNome().toUpperCase())
+                .estado(cidadeDTO.getEstado())
+                .build();
     }
 
 

@@ -58,6 +58,7 @@ public class CidadeMapper {
     public CidadeDTO toCidadeDTO(CidadeRequest cidadeRequest){
         return CidadeDTO
                 .builder()
+                .id(cidadeRequest.getId())
                 .nome(cidadeRequest.getNome())
                 .estado(cidadeRequest.getEstado())
                 .build();
