@@ -3,10 +3,7 @@ package com.desafio.compasso.msclientecidade.service;
 import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
 import com.desafio.compasso.msclientecidade.entity.ClienteEntity;
-import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
-import com.desafio.compasso.msclientecidade.exception.ClienteEncontradoException;
-import com.desafio.compasso.msclientecidade.exception.ClienteIdadeNegativaException;
-import com.desafio.compasso.msclientecidade.exception.ClienteNaoEncontradoException;
+import com.desafio.compasso.msclientecidade.exception.*;
 import com.desafio.compasso.msclientecidade.mapper.CidadeMapper;
 import com.desafio.compasso.msclientecidade.mapper.ClienteMapper;
 import com.desafio.compasso.msclientecidade.repository.CidadeRepository;
@@ -19,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 
 @Slf4j

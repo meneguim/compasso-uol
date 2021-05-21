@@ -25,8 +25,7 @@ public class CidadeServiceTest extends AbstractTest {
 
     @Test
     @Transactional
-    public void listarCidadesVazio(){
-        //List<CidadeDTO> lista = criarVariasCidadesRandom(1);
+    public void listarCidadesVazia(){
         CidadeDTO cidadeDTO = CidadeDTO.builder().build();
         Pageable pageable = Page.empty().getPageable();
         Page<CidadeDTO> dto = this.service.listarCidades(cidadeDTO,pageable);
@@ -56,7 +55,7 @@ public class CidadeServiceTest extends AbstractTest {
     @Test
     @Transactional
     public void listarCidadePorNome(){
-        List<CidadeDTO> lista = criarVariasCidadesRandom(1);
+        List<CidadeDTO> lista = criarVariasCidadesRandom(10);
         CidadeDTO cidadeDTO = CidadeDTO.builder().nome("CIDADE NUMERO 1").build();
         Pageable pageable = Page.empty().getPageable();
         Page<CidadeDTO> dto = this.service.listarCidades(cidadeDTO,pageable);
