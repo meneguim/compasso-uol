@@ -40,6 +40,7 @@ public class ClienteController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ClienteResponse criarCliente(@Valid @RequestBody CriarClienteRequest request){
         log.info("c=ClienteController m=criarCliente, request={}",request);
         return clienteMapper.toClienteResponse(clienteService.criarCliente(this.clienteMapper.toClienteDTO(request)));
@@ -48,7 +49,14 @@ public class ClienteController {
     @PatchMapping("/{id}/nome")
     public ClienteResponse atualizarNomeCliente(@Valid @PathVariable(value = "id", required = true) Long id,
                                                 @Valid @RequestBody AtualizarClienteRequest request){
-        log.info("c=ClienteController m=atualizarNomeCliente, Long={} request",id, request);
+        log.info("c=ClienteController m=atualizarNomeCliente, long={} request={}",id, request);
         return clienteMapper.toClienteResponse(clienteService.atualizarNomeCliente(id,request.getNome()));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarCliente(@Valid @PathVariable(value = "id", required = true) Long id){
+        log.info("c=ClienteController m=atualizarNomeCliente, long={}",id);
+        clienteService.deletarCliente(id);
     }
 }

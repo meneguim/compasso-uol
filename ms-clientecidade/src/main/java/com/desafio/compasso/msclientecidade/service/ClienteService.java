@@ -69,14 +69,23 @@ public class ClienteService {
     }
 
     public ClienteDTO atualizarNomeCliente(Long id, String nomeCompleto){
-        log.info("c=ClienteService m=atualizarNomeCliente long{} string={} ",id,nomeCompleto);
+        log.info("c=ClienteService m=atualizarNomeCliente long={} string={} ",id,nomeCompleto);
 
-        final ClienteDTO clienteDTOBusca = this.clienteMapper.toClienteDTO(this.clienteRepository.findById(id)
+        final ClienteDTO clienteDTO = this.clienteMapper.toClienteDTO(this.clienteRepository.findById(id)
                 .orElseThrow((() -> new ClienteNaoEncontradoException("Cliente id " + id + " não localizado"))));
 
-        clienteDTOBusca.setNomeCompleto(nomeCompleto.toUpperCase());
+        clienteDTO.setNomeCompleto(nomeCompleto.toUpperCase());
 
-        return this.clienteMapper.toClienteDTO(this.clienteRepository.saveAndFlush(this.clienteMapper.toClienteEntity(clienteDTOBusca)));
+        return this.clienteMapper.toClienteDTO(this.clienteRepository.saveAndFlush(this.clienteMapper.toClienteEntity(clienteDTO)));
+    }
+
+    public void deletarCliente(Long id){
+        log.info("c=ClienteService m=deletarCliente long={}",id);
+
+        final ClienteDTO clienteDTO = this.clienteMapper.toClienteDTO(this.clienteRepository.findById(id)
+                .orElseThrow((() -> new ClienteNaoEncontradoException("Cliente id " + id + " não localizado"))));
+
+        clienteRepository.deleteById(id);
     }
 
     private ClienteDTO normalizaDados(ClienteDTO clienteDTO){
