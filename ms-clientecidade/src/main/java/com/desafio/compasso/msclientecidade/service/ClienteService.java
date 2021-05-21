@@ -5,6 +5,7 @@ import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
 import com.desafio.compasso.msclientecidade.entity.ClienteEntity;
 import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
 import com.desafio.compasso.msclientecidade.exception.ClienteEncontradoException;
+import com.desafio.compasso.msclientecidade.exception.ClienteIdadeNegativaException;
 import com.desafio.compasso.msclientecidade.exception.ClienteNaoEncontradoException;
 import com.desafio.compasso.msclientecidade.mapper.CidadeMapper;
 import com.desafio.compasso.msclientecidade.mapper.ClienteMapper;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
 
 @Slf4j
 @Service
@@ -56,9 +59,19 @@ public class ClienteService {
     public ClienteDTO criarCliente(ClienteDTO clienteDTO) {
         log.info("c=ClienteService m=criarCliente dto={}",clienteDTO);
 
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy");
+        Integer anoNascimento = Integer.parseInt(formato.format(clienteDTO.getDataNascimento()));
+        Integer anoAtual = Integer.parseInt(formato.format(System.currentTimeMillis()));
+
         if(this.clienteRepository.findByNomeCompleto(clienteDTO.getNomeCompleto().toUpperCase()).isPresent()){
             throw new ClienteEncontradoException("Cliente nome " + clienteDTO.getNomeCompleto().toUpperCase() + " já está cadastrado");
         };
+
+        if((anoAtual - anoNascimento) < 0){
+            throw new ClienteIdadeNegativaException("A data de nascimento deve ser menor ou igual ao ano de " + anoAtual);
+        } else {
+            clienteDTO.setIdade(anoAtual - anoNascimento);
+        }
 
         CidadeDTO cidadeDTO = this.cidadeMapper.toCidadeDTO(cidadeRepository.findById(clienteDTO.getCidade().getId())
                 .orElseThrow(() -> new CidadeEncontradaException("Cidade id " + clienteDTO.getCidade().getId() + " não localizada")));

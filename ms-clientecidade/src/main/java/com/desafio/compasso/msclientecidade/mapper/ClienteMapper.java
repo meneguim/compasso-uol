@@ -45,7 +45,6 @@ public class ClienteMapper {
                 .nomeCompleto(clienteRequest.getNomeCompleto())
                 .sexo(clienteRequest.getSexo())
                 .dataNascimento(clienteRequest.getDataNascimento())
-                .idade(clienteRequest.getIdade())
                 .cidade(normalizaDados(clienteRequest.getIdCidade()))
                 .build();
     }

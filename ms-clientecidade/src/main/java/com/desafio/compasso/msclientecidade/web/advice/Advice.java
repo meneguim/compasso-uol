@@ -2,6 +2,7 @@ package com.desafio.compasso.msclientecidade.web.advice;
 
 import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
 import com.desafio.compasso.msclientecidade.exception.ClienteEncontradoException;
+import com.desafio.compasso.msclientecidade.exception.ClienteIdadeNegativaException;
 import com.desafio.compasso.msclientecidade.exception.ClienteNaoEncontradoException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,11 @@ public class Advice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ClienteEncontradoException.class)
     public final ResponseEntity<ExceptionResponse> handleClienteEncontradoException(ClienteEncontradoException ex, WebRequest request){
+        return new ResponseEntity<>(createExceptionResponse(ex, request), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ClienteIdadeNegativaException.class)
+    public final ResponseEntity<ExceptionResponse> handleClienteIdadeNegativaException(ClienteIdadeNegativaException ex, WebRequest request){
         return new ResponseEntity<>(createExceptionResponse(ex, request), HttpStatus.BAD_REQUEST);
     }
 

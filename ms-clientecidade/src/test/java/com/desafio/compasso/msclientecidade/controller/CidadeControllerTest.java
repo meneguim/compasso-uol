@@ -161,7 +161,6 @@ public class CidadeControllerTest extends AbstractTest {
     @Test
     @Transactional
     public void criarCidadeDuplicada() throws Exception{
-        //-- CIDADES DE SP
         this.criarCidade(CidadeDTO.builder().nome("são paulo").estado(UfEnum.SP).build());
 
         CriarCidadeRequest request = CriarCidadeRequest.builder()
@@ -198,8 +197,6 @@ public class CidadeControllerTest extends AbstractTest {
         }
         return lista;
     }
-
-
 
     private CidadeDTO criarCidade(CidadeDTO dto){
         return this.service.criarCidade(dto);
