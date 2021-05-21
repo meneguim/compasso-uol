@@ -3,6 +3,8 @@ package com.desafio.compasso.msclientecidade.mapper;
 import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.DTO.ClienteDTO;
 import com.desafio.compasso.msclientecidade.entity.ClienteEntity;
+import com.desafio.compasso.msclientecidade.enums.SexoEnum;
+import com.desafio.compasso.msclientecidade.enums.UfEnum;
 import com.desafio.compasso.msclientecidade.web.request.CriarClienteRequest;
 import com.desafio.compasso.msclientecidade.web.request.ListarClienteRequest;
 import com.desafio.compasso.msclientecidade.web.response.ClienteResponse;
@@ -43,7 +45,7 @@ public class ClienteMapper {
         return ClienteDTO
                 .builder()
                 .nomeCompleto(clienteRequest.getNomeCompleto())
-                .sexo(clienteRequest.getSexo())
+                .sexo(preparaEnum(clienteRequest.getSexo()))
                 .dataNascimento(clienteRequest.getDataNascimento())
                 .cidade(normalizaDados(clienteRequest.getIdCidade()))
                 .build();
@@ -71,5 +73,12 @@ public class ClienteMapper {
 
     private CidadeDTO normalizaDados (Long id){
         return new CidadeDTO(id,null,null);
+    }
+
+    private SexoEnum preparaEnum(String enums) {
+        if(enums != null) {
+            return SexoEnum.valueOf(enums.toUpperCase());
+        }
+        return null;
     }
 }

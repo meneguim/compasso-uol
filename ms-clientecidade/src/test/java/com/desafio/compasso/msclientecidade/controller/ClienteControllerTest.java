@@ -108,7 +108,7 @@ public class ClienteControllerTest extends AbstractTest {
 
         CriarClienteRequest request = CriarClienteRequest.builder()
                 .nomeCompleto("Cliente nome 1")
-                .sexo(SexoEnum.MASCULINO)
+                .sexo(SexoEnum.MASCULINO.toString())
                 .dataNascimento(criarData("01/01/" + anoAtual))
                 .idCidade(cidadeDTO.getId())
                 .build();
@@ -160,7 +160,7 @@ public class ClienteControllerTest extends AbstractTest {
 
         CriarClienteRequest request = CriarClienteRequest.builder()
                 .nomeCompleto("Cliente nome 1")
-                .sexo(SexoEnum.MASCULINO)
+                .sexo(SexoEnum.MASCULINO.toString())
                 .dataNascimento(criarData("01/01/" + anoAtual))
                 .idCidade(cidadeDTO.getId())
                 .build();
@@ -192,7 +192,7 @@ public class ClienteControllerTest extends AbstractTest {
 
         CriarClienteRequest request = CriarClienteRequest.builder()
                 .nomeCompleto("Cliente nome 1")
-                .sexo(SexoEnum.MASCULINO)
+                .sexo(SexoEnum.MASCULINO.toString())
                 .dataNascimento(criarData("01/01/" + anoAtual + 1))
                 .idCidade(cidadeDTO.getId())
                 .build();
