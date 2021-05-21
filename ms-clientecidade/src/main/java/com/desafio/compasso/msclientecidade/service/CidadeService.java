@@ -3,6 +3,7 @@ package com.desafio.compasso.msclientecidade.service;
 import com.desafio.compasso.msclientecidade.DTO.CidadeDTO;
 import com.desafio.compasso.msclientecidade.entity.CidadeEntity;
 import com.desafio.compasso.msclientecidade.exception.CidadeEncontradaException;
+import com.desafio.compasso.msclientecidade.exception.CidadeEstadoNaoEspecificadoException;
 import com.desafio.compasso.msclientecidade.mapper.CidadeMapper;
 import com.desafio.compasso.msclientecidade.repository.CidadeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,10 @@ public class CidadeService {
 
     public CidadeDTO criarCidade(CidadeDTO cidadeDTO){
         log.info("c=CidadeService m=CriarCidadeRequest, dto={}",cidadeDTO);
+
+        if(cidadeDTO.getNome() == null || cidadeDTO.getEstado() == null) {
+            throw new CidadeEstadoNaoEspecificadoException("A cidade e o estado devem ser informados para criação");
+        }
 
         if(cidadeRepository.validaExisteCidade(cidadeDTO.getNome().toUpperCase(),cidadeDTO.getEstado()) > 0) {
             throw new CidadeEncontradaException("A cidade " + cidadeDTO.getNome().toUpperCase() + " já existe no cadastro");
